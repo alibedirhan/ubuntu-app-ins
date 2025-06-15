@@ -1,5 +1,10 @@
 # Ubuntu Program Kurulum Yöneticisi 🚀
 
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![Ubuntu](https://img.shields.io/badge/Ubuntu-20.04%2B-orange.svg)
+![Shell](https://img.shields.io/badge/Shell-Bash-green.svg)
+![Zenity](https://img.shields.io/badge/GUI-Zenity-purple.svg)
+
 Ubuntu için geliştirilmiş, kullanıcı dostu bir program kurulum aracı. Terminal bilgisi gerektirmeden tek tıkla program kurulumu yapabilirsiniz.
 
 ## 🌟 Özellikler
