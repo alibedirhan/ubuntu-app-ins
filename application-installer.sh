@@ -2,6 +2,7 @@
 
 # Ubuntu Program Kurulum Yöneticisi - Zenity GUI Version v2.2
 # Kritik hatalar, yapısal ve performans sorunları düzeltilmiş versiyon
+# ShellCheck uyarıları giderilmiş versiyon
 
 # Hata yönetimi - sadece undefined variables için strict mode
 set -u
@@ -201,7 +202,8 @@ check_system() {
 
 # Kurulum tercihi seçimi
 select_installation_preference() {
-    local preference=$(zenity --list \
+    local preference
+    preference=$(zenity --list \
         --title="Kurulum Tercihi" \
         --text="🛠️ Programlar nasıl kurulsun?" \
         --radiolist \
@@ -263,7 +265,8 @@ select_installation_preference() {
 
 # Kurulum modu seçimi
 select_installation_mode() {
-    local mode=$(zenity --list \
+    local mode
+    mode=$(zenity --list \
         --title="Kurulum Modu Seçimi" \
         --text="🎯 Kategorilerdeki programlar nasıl kurulsun?" \
         --radiolist \
@@ -305,7 +308,8 @@ select_installation_mode() {
 
 # Kategori seçimi
 select_categories() {
-    local categories=$(zenity --list \
+    local categories
+    categories=$(zenity --list \
         --title="Kategori Seçimi" \
         --text="Kurmak istediğiniz kategorileri seçin:" \
         --checklist \
@@ -364,7 +368,8 @@ get_install_method() {
             esac
             ;;
         "manual")
-            local method=$(zenity --list \
+            local method
+            method=$(zenity --list \
                 --title="$package Kurulum Yöntemi" \
                 --text="$package nasıl kurulsun?" \
                 --radiolist \
@@ -451,7 +456,8 @@ install_package() {
     local description="${PACKAGE_DESCRIPTIONS[$package]:-$package}"
     local preference="$2"
     
-    local method=$(get_install_method "$package" "$preference")
+    local method
+    method=$(get_install_method "$package" "$preference")
     
     if [[ "$method" == "skip" ]]; then
         echo "SKIP|$package kurulumu kullanıcı tarafından iptal edildi"
@@ -581,8 +587,11 @@ get_category_name() {
 # Seçmeli paket seçimi
 select_packages_in_category() {
     local category="$1"
-    local category_name=$(get_category_name "$category")
-    local packages=$(get_category_packages "$category")
+    local category_name
+    local packages
+    
+    category_name=$(get_category_name "$category")
+    packages=$(get_category_packages "$category")
     
     log_info "Paket seçim penceresi açılıyor: $category_name"
     
@@ -593,7 +602,8 @@ select_packages_in_category() {
         zenity_args+=(TRUE "$package" "$description")
     done <<< "$packages"
     
-    local selected_packages=$(zenity --list \
+    local selected_packages
+    selected_packages=$(zenity --list \
         --title="$category_name - Paket Seçimi" \
         --text="🔽 $category_name kategorisinden kurmak istediğiniz programları seçin:" \
         --checklist \
@@ -619,7 +629,9 @@ install_category() {
     local category="$1"
     local preference="$2"
     local selected_packages="$3"
-    local category_name=$(get_category_name "$category")
+    local category_name
+    
+    category_name=$(get_category_name "$category")
     
     # Kurulacak paketleri belirle
     local packages_to_install=()
@@ -666,7 +678,7 @@ Devam edilsin mi?"; then
     local success_count=0
     local skip_count=0
     local error_count=0
-    local results_file="$TEMP_DIR/install_results_$"
+    local results_file="$TEMP_DIR/install_results_$$"
     
     # Progress bar ile kurulum
     (
@@ -830,7 +842,8 @@ manage_package_lists() {
             show_package_list_info
         fi
         
-        local choice=$(zenity --list \
+        local choice
+        choice=$(zenity --list \
             --title="Paket Listesi Yönetimi" \
             --text="💾 Yapmak istediğiniz işlemi seçin:" \
             --radiolist \
@@ -861,7 +874,8 @@ Bu işlem, şu anda bilgisayarınızda kurulu olan TÜM programların listesini 
 
 Devam edilsin mi?"; then
                     
-                    local save_path=$(zenity --file-selection \
+                    local save_path
+                    save_path=$(zenity --file-selection \
                         --title="Paket listesini nereye kaydetmek istiyorsunuz?" \
                         --save \
                         --filename="$HOME/benim-programlarim-$(date +%Y%m%d).txt" 2>/dev/null)
@@ -879,7 +893,8 @@ Devam edilsin mi?"; then
                             --width=400 \
                             --auto-close 2>/dev/null
                         
-                        local file_size=$(wc -l < "$save_path")
+                        local file_size
+                        file_size=$(wc -l < "$save_path")
                         show_info "✅ BAŞARILI!
 
 📄 Dosya: $(basename "$save_path")
@@ -902,12 +917,14 @@ Bu işlem, daha önce kaydedilmiş bir paket listesindeki TÜM programları bilg
 
 Devam edilsin mi?"; then
                     
-                    local list_file=$(zenity --file-selection \
+                    local list_file
+                    list_file=$(zenity --file-selection \
                         --title="Hangi paket listesi dosyasını kullanmak istiyorsunuz?" \
                         --file-filter="Metin dosyaları (*.txt) | *.txt" 2>/dev/null)
                     
                     if [[ -n "$list_file" && -f "$list_file" ]]; then
-                        local package_count=$(wc -l < "$list_file")
+                        local package_count
+                        package_count=$(wc -l < "$list_file")
                         
                         if ask_confirmation "📋 SEÇİLEN LİSTE BİLGİLERİ:
 
@@ -1016,7 +1033,8 @@ LibreOffice, Thunderbird, Telegram
 # Ana menü
 main_menu() {
     while true; do
-        local choice=$(zenity --list \
+        local choice
+        choice=$(zenity --list \
             --title="Ubuntu Program Kurulum Yöneticisi v2.2" \
             --text="🚀 Yapmak istediğiniz işlemi seçin:" \
             --radiolist \
