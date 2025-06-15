@@ -1,0 +1,32 @@
+# Log dosyaları
+*.log
+kurulum.log
+
+# Geçici dosyalar
+/tmp/
+temp/
+*.tmp
+*.temp
+
+# Yedek dosyaları
+*.bak
+*.backup
+*~
+
+# Sistem dosyaları
+.DS_Store
+Thumbs.db
+
+# IDE dosyaları
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Test dosyaları
+test/
+tests/
+
+# Paket listeleri (kullanıcı verileri)
+benim-programlarim*.txt
+paket-listesi*.txt
